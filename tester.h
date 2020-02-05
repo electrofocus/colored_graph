@@ -6,16 +6,17 @@
 
 #include "solver.h"
 #include <random>
+#include <ctime>
 
 
 class Tester {
 public:
     Graph graph;
 
+    Tester() = default;
+
     static std::set<Graph::Point> get_points(int square, int points_number) {
         std::default_random_engine rng(std::random_device{}());
-//        std::uniform_int_distribution<int> dist(square / 2, square);
-//        int points_number = dist(rng);
         int dimension = (int) sqrt(square) - 1;
         std::uniform_int_distribution<int> point_dist(0, dimension);
 
@@ -53,6 +54,35 @@ public:
         }
     }
 
+    void time_test(int square, int points_number) {
+        int steps = 0;
+        build_graph(Tester::get_points(square, points_number));
+
+        Solver solver(graph);
+        while (!solver.is_solved()) {
+            solver.step();
+            steps++;
+        }
+
+        graph.reset_color();
+        clock_t begin = clock();
+        solver.completely_solve();
+        clock_t end = clock();
+        double time = (double) (end - begin) / CLOCKS_PER_SEC;
+        std::cout << graph.size() << " points, " << steps << " steps, " << time
+                  << " secs, (time/steps): " << (double) time / steps << std::endl;
+        graph.clear();
+    }
+
+    void test() {
+        int square = 5200;
+        time_test(square, 5000);
+        time_test(square, 4000);
+        time_test(square, 3006);
+        time_test(square, 2049);
+        time_test(square, 1150);
+    }
+
     bool check_solution() {
         for (auto &point: graph.points) {
             for (auto neighbour: point.second.neighbours) {
@@ -63,11 +93,6 @@ public:
             }
         }
         return true;
-    }
-
-    void test() {
-        build_graph(Tester::get_points(5000, 4700));
-
     }
 };
 

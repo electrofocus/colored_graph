@@ -9,56 +9,44 @@ int main() {
     HANDLE hConsole;
     hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    int square = 5000; //3249
-    int points_number = 4700; //3249
+    int square = 100; //3249
+    int points_number = 50; //3249
     Tester tester;
-    auto points = Tester::get_points(square, points_number);
+    std::set<Graph::Point> points = Tester::get_points(square, points_number);
     tester.build_graph(points);
 
     Solver solver(tester.graph);
-
     solver.completely_solve();
 
-    int k = 0;
-//    while (!solver.is_solved()) {
-//        solver.step();
-//        k++;
-//    }
+    std::set<Graph::Point> p = tester.graph.get_points();
+    std::vector<std::vector<int>> mas((int) sqrt(square), std::vector<int>((int) sqrt(square), 0));
 
-    {
-        std::set<Graph::Point> p = tester.graph.get_points();
+    for (auto &point: p) {
+        mas[point.x][point.y] = point.color;
+    }
 
-        std::vector<std::vector<int>> mas((int) sqrt(square), std::vector<int>((int) sqrt(square), 0));
+    std::cout << "  ";
 
-        for (const auto &point: p) {
-            mas[point.x][point.y] = point.color;
-        }
+    for (int i = 0; i < (int) sqrt(square); i++) {
+        std::cout << i % 10 << ' ';
+    }
 
-        std::cout << "  ";
+    std::cout << std::endl;
 
-        for (int i = 0; i < (int) sqrt(square); i++) {
-            std::cout << i % 10 << ' ';
-        }
-
-        std::cout << std::endl;
-
-        for (int i = 0; i < (int) sqrt(square); i++) {
-            std::cout << i % 10 << ' ';
-            for (int j = 0; j < (int) sqrt(square); j++) {
-                SetConsoleTextAttribute(hConsole, mas[i][j]);
-                if (mas[i][j] != 0) {
-                    std::cout << 'o' << ' ';
-                } else {
-                    std::cout << ' ' << ' ';
-                }
+    for (int i = 0; i < (int) sqrt(square); i++) {
+        std::cout << i % 10 << ' ';
+        for (int j = 0; j < (int) sqrt(square); j++) {
+            SetConsoleTextAttribute(hConsole, mas[i][j]);
+            if (mas[i][j] != 0) {
+                std::cout << 'o' << ' ';
+            } else {
+                std::cout << ' ' << ' ';
             }
-            std::cout << std::endl;
         }
+        std::cout << std::endl;
     }
 
     std::cout << std::endl << tester.graph.size() << " points" << std::endl;
-    std::cout << k << " steps" << std::endl;
-
     std::cout << "solution: " << tester.check_solution() << std::endl;
 
     return 0;

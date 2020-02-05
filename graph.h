@@ -68,6 +68,12 @@ public:
         points.clear();
     }
 
+    void reset_color() {
+        for (auto &point: points) {
+            point.second.color = 0;
+        }
+    }
+
     friend class Solver;
 
     friend class Tester;
@@ -75,5 +81,5 @@ public:
 
 
 bool operator<(const Graph::Point &a, const Graph::Point &b) {
-    return a.x < b.x || (!(b.x < a.x) && a.y < b.y);
+    return a.x < b.x || (b.x >= a.x && a.y < b.y);
 }
