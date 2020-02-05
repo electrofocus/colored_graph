@@ -9,8 +9,8 @@ int main() {
     HANDLE hConsole;
     hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    int square = 9; //3249
-    int points_number = 16; //3249
+    int square = 81; //3249
+    int points_number = 81; //3249
     Tester tester;
     auto points = Tester::get_points(square, points_number);
     tester.build_graph(points);

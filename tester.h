@@ -34,33 +34,22 @@ public:
                     graph.add_point(*point_1);
                     graph.add_point(*point_2);
                     graph.add_edge(*point_1, *point_2);
-                }
-                if (abs(point_1->x - point_2->x) == 1 && abs(point_1->y - point_2->y) == 1) {
-                    if (point_1->x > point_2->x && point_1->y > point_2->y &&
-                        !graph.is_edge(Graph::Point(point_1->x - 1, point_1->y),
-                                       Graph::Point(point_2->x + 1, point_2->y))) {
-                        graph.add_point(*point_1);
-                        graph.add_point(*point_2);
-                        graph.add_edge(*point_1, *point_2);
-                    } else if (point_2->x > point_1->x && point_2->y > point_1->y &&
-                               !graph.is_edge(Graph::Point(point_2->x - 1, point_2->y),
-                                              Graph::Point(point_1->x + 1, point_1->y))) {
-                        graph.add_point(*point_1);
-                        graph.add_point(*point_2);
-                        graph.add_edge(*point_1, *point_2);
-                    } else if (point_2->x > point_1->x && point_1->y > point_2->y &&
-                               !graph.is_edge(Graph::Point(point_2->x - 1, point_2->y),
-                                              Graph::Point(point_1->x + 1, point_1->y))) {
-                        graph.add_point(*point_1);
-                        graph.add_point(*point_2);
-                        graph.add_edge(*point_1, *point_2);
-                    } else if (point_1->x > point_2->x && point_2->y > point_1->y &&
-                               !graph.is_edge(Graph::Point(point_1->x - 1, point_1->y),
-                                              Graph::Point(point_2->x + 1, point_2->y))) {
-                        graph.add_point(*point_1);
-                        graph.add_point(*point_2);
-                        graph.add_edge(*point_1, *point_2);
-                    }
+                } else if ((abs(point_1->x - point_2->x) == 1 && abs(point_1->y - point_2->y) == 1) &&
+                           ((point_1->x > point_2->x && point_1->y > point_2->y &&
+                             !graph.is_edge(Graph::Point(point_1->x - 1, point_1->y),
+                                            Graph::Point(point_2->x + 1, point_2->y))) ||
+                            (point_2->x > point_1->x && point_2->y > point_1->y &&
+                             !graph.is_edge(Graph::Point(point_2->x - 1, point_2->y),
+                                            Graph::Point(point_1->x + 1, point_1->y))) ||
+                            (point_2->x > point_1->x && point_1->y > point_2->y &&
+                             !graph.is_edge(Graph::Point(point_2->x - 1, point_2->y),
+                                            Graph::Point(point_1->x + 1, point_1->y))) ||
+                            (point_1->x > point_2->x && point_2->y > point_1->y &&
+                             !graph.is_edge(Graph::Point(point_1->x - 1, point_1->y),
+                                            Graph::Point(point_2->x + 1, point_2->y))))) {
+                    graph.add_point(*point_1);
+                    graph.add_point(*point_2);
+                    graph.add_edge(*point_1, *point_2);
                 }
             }
         }
