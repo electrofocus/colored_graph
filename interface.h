@@ -7,3 +7,7 @@
 #include <iostream>
 #include <fstream>
 
+
+class Interface {
+
+};

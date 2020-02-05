@@ -9,8 +9,8 @@ int main() {
     HANDLE hConsole;
     hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    int square = 81; //3249
-    int points_number = 81; //3249
+    int square = 100; //3249
+    int points_number = 90; //3249
     Tester tester;
     auto points = Tester::get_points(square, points_number);
     tester.build_graph(points);
@@ -32,7 +32,7 @@ int main() {
 //        cout << '(' << point.x << ',' << point.y << ") color" << point.color << endl;
 //    }
 
-        std::vector<std::vector<int>> mas(square, std::vector<int>(square, 0));
+        std::vector<std::vector<int>> mas((int) sqrt(square) + 1, std::vector<int>((int) sqrt(square) + 1, 0));
 
         for (const auto &point: p) {
             mas[point.x][point.y] = point.color;
@@ -40,15 +40,15 @@ int main() {
 
         std::cout << "  ";
 
-        for (int i = 0; i < sqrt(square) + 1; i++) {
+        for (int i = 0; i < sqrt(square); i++) {
             std::cout << i % 10 << ' ';
         }
 
         std::cout << std::endl;
 
-        for (int i = 0; i < sqrt(square) + 1; i++) {
+        for (int i = 0; i < sqrt(square); i++) {
             std::cout << i % 10 << ' ';
-            for (int j = 0; j < sqrt(square) + 1; j++) {
+            for (int j = 0; j < sqrt(square); j++) {
                 SetConsoleTextAttribute(hConsole, mas[i][j]);
                 if (mas[i][j] != 0) {
                     std::cout << 'o' << ' ';
@@ -62,6 +62,8 @@ int main() {
 
     std::cout << std::endl << tester.graph.size() << " points" << std::endl;
     std::cout << k << " steps" << std::endl;
+
+    std::cout << "solution: " << tester.check_solution() << std::endl;
 
     return 0;
 }
