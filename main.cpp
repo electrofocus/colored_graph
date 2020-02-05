@@ -1,66 +1,67 @@
 #include "interface.h"
-#include <set>
-#include <ctime>
+#include "tester.h"
 #include <cmath>
-#include <random>
-#include <cstdlib>
+#include <windows.h>
+#include <iostream>
 
-using namespace std;
 
 int main() {
+    HANDLE hConsole;
+    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
+    int square = 9; //3249
+    int points_number = 16; //3249
+    Tester tester;
+    auto points = Tester::get_points(square, points_number);
+    tester.build_graph(points);
 
-    default_random_engine rng(random_device{}());
+    Solver solver(tester.graph);
 
-    int n = 36;
+    solver.completely_solve();
 
-    uniform_int_distribution<int> dist(n / 2, n);
+    int k = 0;
+//    while (!solver.is_solved()) {
+//        solver.step();
+//        k++;
+//    }
 
-    int m = dist(rng);
+    {
+        auto p = tester.graph.get_points();
 
-    n = sqrt(n);
+//    for (const auto& point: p) {
+//        cout << '(' << point.x << ',' << point.y << ") color" << point.color << endl;
+//    }
 
-    uniform_int_distribution<int> pointDist(0, n);
+        std::vector<std::vector<int>> mas(square, std::vector<int>(square, 0));
 
-    set<pair<int, int>> points;
-    set<pair<pair<int, int>, pair<int, int>>> edges;
+        for (const auto &point: p) {
+            mas[point.x][point.y] = point.color;
+        }
 
-    while (points.size() < m) {
-        points.insert({pointDist(rng), pointDist(rng)});
-    }
+        std::cout << "  ";
 
-    cout << m << endl;
-    for (auto point_1 = points.begin(); point_1 != points.end(); point_1++) {
-        for (auto point_2 = point_1; point_2 != points.end(); point_2++) {
-            if ((abs(point_1->first - point_2->first) == 1 && abs(point_1->second - point_2->second) == 0) ||
-                (abs(point_1->first - point_2->first) == 0 && abs(point_1->second - point_2->second) == 1)) {
-                edges.insert({*point_1, *point_2});
+        for (int i = 0; i < sqrt(square) + 1; i++) {
+            std::cout << i % 10 << ' ';
+        }
+
+        std::cout << std::endl;
+
+        for (int i = 0; i < sqrt(square) + 1; i++) {
+            std::cout << i % 10 << ' ';
+            for (int j = 0; j < sqrt(square) + 1; j++) {
+                SetConsoleTextAttribute(hConsole, mas[i][j]);
+                if (mas[i][j] != 0) {
+                    std::cout << 'o' << ' ';
+                } else {
+                    std::cout << ' ' << ' ';
+                }
             }
+            std::cout << std::endl;
         }
     }
 
-    cout << edges.size() << endl;
-    vector<vector<char> > mas(n + 1, vector<char>(n + 1, ' '));
-
-    cout << endl << endl;
-
-    for (int i = 0; i < n + 1; i++) {
-        for (int j = 0; j < n + 1; j++) {
-            mas[i][j] = ' ';
-        }
-    }
-
-    for (auto x: edges) {
-        mas[x.first.first][x.first.second] = 'o';
-        mas[x.second.first][x.second.second] = 'o';
-    }
-
-    for (int i = 0; i < n + 1; i++) {
-        for (int j = 0; j < n + 1; j++) {
-            cout << mas[i][j] << ' ';
-        }
-        cout << endl;
-    }
+    std::cout << std::endl << tester.graph.size() << " points" << std::endl;
+    std::cout << k << " steps" << std::endl;
 
     return 0;
 }
