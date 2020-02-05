@@ -43,6 +43,19 @@ public:
 
         colors.erase(graph.points.at(*current_neighbour).color);
         current_neighbour++;
+
+        if (current_neighbour == current_point->second.neighbours.end()) {
+            current_point->second.color = *colors.begin();
+            colors = {1, 2, 3, 4, 5};
+            current_point++;
+            if (current_point != graph.points.end()) {
+                current_neighbour = current_point->second.neighbours.begin();
+            }
+            else {
+                _is_solved = true;
+                return;
+            }
+        }
     }
 
     void completely_solve() {

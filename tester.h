@@ -16,7 +16,7 @@ public:
         std::default_random_engine rng(std::random_device{}());
 //        std::uniform_int_distribution<int> dist(square / 2, square);
 //        int points_number = dist(rng);
-        int dimension = (int) sqrt(square - 1);
+        int dimension = (int) sqrt(square) - 1;
         std::uniform_int_distribution<int> point_dist(0, dimension);
 
         std::set<Graph::Point> points;
@@ -63,6 +63,11 @@ public:
             }
         }
         return true;
+    }
+
+    void test() {
+        build_graph(Tester::get_points(5000, 4700));
+
     }
 };
 

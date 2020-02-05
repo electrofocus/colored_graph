@@ -64,6 +64,10 @@ public:
         return points.size();
     }
 
+    void clear() {
+        points.clear();
+    }
+
     friend class Solver;
 
     friend class Tester;
