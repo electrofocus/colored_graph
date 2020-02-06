@@ -46,7 +46,7 @@ void Tester::build_graph(int square, int points_number) {
     }
 }
 
-Tester::Result Tester::time_test(int square, int points_number) {
+Tester::Result Tester::time_test(int square, int points_number, bool clear) {
     int steps = 0;
     build_graph(square, points_number);
 
@@ -62,19 +62,12 @@ Tester::Result Tester::time_test(int square, int points_number) {
     clock_t end = clock();
     double time = (double) (end - begin) / CLOCKS_PER_SEC;
 
+    if (clear) {
+        graph.clear();
+    }
+
     return {graph.size(), steps, time};
-
-//    graph.clear();
 }
-
-//void Tester::test() {
-//    int square = 5200;
-//    time_test(square, 5000);
-//    time_test(square, 4000);
-//    time_test(square, 3006);
-//    time_test(square, 2049);
-//    time_test(square, 1150);
-//}
 
 bool Tester::check_solution() {
     for (auto &point: graph.points) {
@@ -86,4 +79,39 @@ bool Tester::check_solution() {
         }
     }
     return true;
+}
+
+void Tester::print_graph(int square) {
+    HANDLE hConsole;
+    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    std::set<Graph::Point> points = graph.get_points();
+    std::vector<std::vector<int>> mas((int) sqrt(square), std::vector<int>((int) sqrt(square), -1));
+    for (auto &point: points) {
+        mas[point.x][point.y] = point.color;
+    }
+    std::cout << std::endl << "  ";
+
+    for (int i = 0; i < (int) sqrt(square); i++) {
+        std::cout << i % 10 << ' ';
+    }
+
+    std::cout << std::endl;
+
+    for (int i = 0; i < (int) sqrt(square); i++) {
+        std::cout << i % 10 << ' ';
+        for (int j = 0; j < (int) sqrt(square); j++) {
+            SetConsoleTextAttribute(hConsole, mas[i][j]);
+            if (mas[i][j] != -1) {
+                std::cout << 'o' << ' ';
+            } else {
+                std::cout << ' ' << ' ';
+            }
+        }
+        std::cout << std::endl;
+    }
+}
+
+void Tester::print_result(Result result) {
+    std::cout << result.points << " points, " << result.steps << " steps, " << result.time
+              << " secs, (time/steps): " << result.time / result.steps << std::endl;
 }

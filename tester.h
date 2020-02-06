@@ -6,6 +6,7 @@
 #include <random>
 #include <ctime>
 #include <iostream>
+#include <windows.h>
 
 #pragma once
 
@@ -27,7 +28,11 @@ public:
 
     void build_graph(int square, int points_number);
 
-    Result time_test(int square, int points_number);
+    Result time_test(int square, int points_number, bool clear);
 
     bool check_solution();
+
+    void print_graph(int square);
+
+    static void print_result(Result result);
 };
