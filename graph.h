@@ -6,6 +6,7 @@
 
 #include <map>
 #include <set>
+#include <iostream>
 
 
 class Graph {
@@ -24,12 +25,6 @@ private:
 
 public:
     Graph() = default;
-
-    void add_point(int x, int y) {
-        if (points.find({x, y}) == points.end()) {
-            points.insert({{x, y}, Point(x, y)});
-        }
-    }
 
     void add_point(const Point &point) {
         if (points.find({point.x, point.y}) == points.end()) {
@@ -80,6 +75,4 @@ public:
 };
 
 
-bool operator<(const Graph::Point &a, const Graph::Point &b) {
-    return a.x < b.x || (b.x >= a.x && a.y < b.y);
-}
+bool operator<(const Graph::Point &a, const Graph::Point &b);
