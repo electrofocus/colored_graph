@@ -74,5 +74,4 @@ public:
     friend class Tester;
 };
 
-
 bool operator<(const Graph::Point &a, const Graph::Point &b);
