@@ -46,7 +46,7 @@ void Tester::build_graph(int square, int points_number) {
     }
 }
 
-Tester::Result Tester::time_test(int square, int points_number, bool clear) {
+Tester::Result Tester::time_test(int square, int points_number) {
     int steps = 0;
     build_graph(square, points_number);
 
@@ -61,10 +61,6 @@ Tester::Result Tester::time_test(int square, int points_number, bool clear) {
     solver.completely_solve();
     clock_t end = clock();
     double time = (double) (end - begin) / CLOCKS_PER_SEC;
-
-    if (clear) {
-        graph.clear();
-    }
 
     return {graph.size(), steps, time};
 }

@@ -28,7 +28,7 @@ public:
 
     void build_graph(int square, int points_number);
 
-    Result time_test(int square, int points_number, bool clear);
+    Result time_test(int square, int points_number);
 
     bool check_solution();
 
