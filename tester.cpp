@@ -109,5 +109,5 @@ void Tester::print_graph(int square) {
 
 void Tester::print_result(Result result) {
     std::cout << result.points << " points, " << result.steps << " steps, " << result.time
-              << " secs, (secs/steps): " << result.time / result.steps << std::endl;
+              << " secs, (secs/steps): " << result.time / result.steps /*<< ", as: " << result.time / (result.points * result.points)*/ << std::endl;
 }
